@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 
+from time import perf_counter
 from enum import Enum
 
 absolute_path = os.path.dirname(__file__)
@@ -46,9 +47,22 @@ class LogTemplates(Enum):
     IMAGE_VERIFIED = "The images successfully passed difference check."
     IMAGE_DIFF = "Found difference in the images."
     IMAGE_MISSING = "Missing at least one of the splitted parts."
+    RUNTIME = "The function was executed in {run_time:.6f} seconds."
 
     def format(self, *args, **kwargs):
         return self.value.format(*args, **kwargs)
 
     def __str__(self):
         return self.value
+
+
+def runtime(function: callable) -> callable:
+    def wrapper(*args, **kwargs):
+        start_time = perf_counter()
+        result = function(*args, **kwargs)
+        end_time = perf_counter()
+        run_time = end_time - start_time
+        logger = Logger(__name__)
+        logger.info(LogTemplates.RUNTIME.format(run_time=run_time))
+        return result
+    return wrapper

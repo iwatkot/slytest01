@@ -7,7 +7,7 @@ from collections import defaultdict, namedtuple
 import cv2
 import numpy as np
 
-from log_handler import Logger, LogTemplates
+from log_handler import Logger, LogTemplates, runtime
 
 logger = Logger(__name__)
 
@@ -57,6 +57,7 @@ def get_y_coord(filename: str) -> int:
     return int(match.group(1))
 
 
+@runtime
 def merge_image(directory: str, output_path: str) -> None:
     """Merges the image from splitted parts."""
     filenames = get_files(directory)

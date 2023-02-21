@@ -6,7 +6,7 @@ from pathlib import Path
 
 import cv2
 
-from log_handler import Logger, LogTemplates
+from log_handler import Logger, LogTemplates, runtime
 
 logger = Logger(__name__)
 
@@ -15,6 +15,7 @@ Sizes = namedtuple("Sizes", ["height", "width", "is_percent"])
 ImageSize = namedtuple("ImageSize", ["height", "width"])
 
 
+@runtime
 def split_image(image_path: str, window: Sizes,
                 stride: Sizes, output_dir: str) -> None:
     """Loads the image from the file and splits it into the segments with
