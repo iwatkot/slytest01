@@ -57,11 +57,14 @@ class LogTemplates(Enum):
 
 
 def runtime(function: callable) -> callable:
+    """Measures precise time of the function runtime and writes it into
+    the main log."""
     def wrapper(*args, **kwargs):
         start_time = perf_counter()
         result = function(*args, **kwargs)
         end_time = perf_counter()
         run_time = end_time - start_time
+
         logger = Logger(__name__)
         logger.info(LogTemplates.RUNTIME.format(run_time=run_time))
         return result
