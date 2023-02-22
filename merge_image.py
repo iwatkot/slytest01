@@ -33,7 +33,7 @@ def get_files(directory: str) -> defaultdict:
 
 
 def get_image_size(filenames: defaultdict[int, list[str]]) -> ImageSize:
-    """Calculcates the size of the result image using size and coordinates of
+    """Calculates the size of the result image using size and coordinates of
     the last image (right bottom corner)."""
     last_image = filenames.get(max(filenames.keys()))[-1]
 
