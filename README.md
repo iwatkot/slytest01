@@ -1,4 +1,4 @@
-placeholder for CodeClimate badge
+<a href="https://codeclimate.com/github/iwatkot/slytest01/maintainability"><img src="https://api.codeclimate.com/v1/badges/0db7338bb82431b7cf00/maintainability" /></a>
 
 ## Overview
 The repo contains of the two scripts, which are designed to work with **Sliding window** method for splitting the image into the tiles, and after recreates the image and check if the merged image has any diffrerences from the original file. Both scripts are built on `cv2`, the script for merging the image is also using `numpy`. In addition the repo contains a simple logger, which uses Python's built-in logging module, and writes logs both to the file and stdout. The log_handler module is also contains a decorator for measuring the runtime of the functions.<br>
@@ -19,7 +19,7 @@ Full list of split_image optional arguments:<br>
 <br>
 
 **Example of merging the image:**  `python3 merge_image.py --input_dir ./output --output_path result.png --test_file test.jpg`<br>
-Where all three arguments are required: input direcotry which contains image tiles, output path for the merged file and the path to the original file to verify that there's no difference between files.<br>
+Where all three arguments are required: input directory which contains image tiles, output path for the merged file and the path to the original file to verify that there's no difference between files.<br>
 <br>
 
 ## Asciinema examples
