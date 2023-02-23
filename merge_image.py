@@ -17,7 +17,15 @@ ImageSize = namedtuple('ImageSize', ['height', 'width'])
 
 def get_files(directory: str) -> defaultdict:
     """Creates a defaultdict object, which has keys with X coordinates and as
-    values - lists with filenames sorted by Y coordinate."""
+    values - lists of filenames with same X coordinate sorted by Y coordinate.
+
+    Args:
+        directory (str): the path to the directory, containing input tiles
+
+    Returns:
+        defaultdict: dictionary, containing collections of filenames with same
+            X coordinate as values, and X coordinates as a keys.
+    """
     files_dict = defaultdict(list)
     filenames = [f"{directory}/{filename}" for
                  filename in os.listdir(directory)]
@@ -32,10 +40,17 @@ def get_files(directory: str) -> defaultdict:
     return files_dict
 
 
-def get_image_size(filenames: defaultdict[int, list[str]]) -> ImageSize:
+def get_image_size(last_image: str) -> ImageSize:
     """Calculates the size of the result image using size and coordinates of
-    the last image (right bottom corner)."""
-    last_image = filenames.get(max(filenames.keys()))[-1]
+    the last image (right bottom corner).
+
+    Args:
+        last_image (str): filename of the last image in grid
+
+    Returns:
+        ImageSize: named tuple, containing height and width of the image
+            in pixels
+    """
 
     x_coord, y_coord = get_x_coord(last_image), get_y_coord(last_image)
 
@@ -46,22 +61,45 @@ def get_image_size(filenames: defaultdict[int, list[str]]) -> ImageSize:
 
 
 def get_x_coord(filename: str) -> int:
-    """Extracts the X coordinate from the filename."""
+    """Extracts the X coordinate from the filename.
+
+    Args:
+        filename (str): the path to the file to extract the coordinate from
+
+    Returns:
+        int: value of the X coordinate
+    """
     match = re.search(r'x(\d+)_', filename)
     return int(match.group(1))
 
 
 def get_y_coord(filename: str) -> int:
-    """Extracts the Y coordinate from the filename."""
+    """Extracts the Y coordinate from the filename.
+
+    Args:
+        filename (str): the path to the file to extract the coordinate from
+
+    Returns:
+        int: value of the Y coordinate
+    """
     match = re.search(r'_y(\d+)', filename)
     return int(match.group(1))
 
 
 @runtime
 def merge_image(directory: str, output_path: str) -> None:
-    """Merges the image from splitted parts."""
+    """Merges the image from splitted parts, using path to the directory,
+    containing image tiles.
+
+    Args:
+        directory (str): the path to the input directory with tile files
+        output_path (str): the path for the output image
+    """
     filenames = get_files(directory)
-    image_size = get_image_size(filenames)
+
+    last_image = filenames.get(max(filenames.keys()))[-1]
+    image_size = get_image_size(last_image)
+
     logger.info(LogTemplates.SIZE_CALCULATED.format(height=image_size.height,
                                                     width=image_size.width))
 
@@ -89,9 +127,15 @@ def merge_image(directory: str, output_path: str) -> None:
 
 
 def check_difference(test_file: str, merged_file: str) -> None:
-    """Checks the difference between the merged image and test image."""
+    """Checks the difference between the merged image and test image.
+
+    Args:
+        test_file (str): the path to the original file
+        merged_file (str): the path to the file after merging
+    """
     test_file = cv2.imread(test_file)
     merged_file = cv2.imread(merged_file)
+
     if np.array_equal(test_file, merged_file):
         logger.info(LogTemplates.IMAGE_VERIFIED)
     else:
@@ -103,7 +147,12 @@ def check_difference(test_file: str, merged_file: str) -> None:
 
 
 def parse_arguments() -> argparse.Namespace:
-    """Creates parser and reads arguments from the command line."""
+    """Creates parser and reads arguments from the command line.
+
+    Returns:
+        argparse.Namespace: An object containing the parsed command-line
+            arguments.
+    """
     parser = argparse.ArgumentParser(description="Recreates image after it was"
                                      "splitted with sliding window method.")
     # Reading arguments from the command line.

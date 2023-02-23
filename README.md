@@ -5,7 +5,7 @@ The repo contains two scripts, which are designed to work with the **Sliding win
 
 ## Get started
 _Both of the scripts are designed to be launched from the command line with different arguments._<br><br>
-**Example of splitting the image:** `python3 split_image.py --image_path path/to/file --output_dir path/to/output/dir --window_height  --window_width  --stride_height  --stride_width `<br>
+**Example of splitting the image:** `python3 split_image.py --image_path path/to/file --output_dir path/to/output/dir --window_height 200 --window_width 200 --stride_height 100 --stride_width 100`<br>
 Where **--image_path** and **--**output_dir** are required, other arguments have default values and can be skipped while launching the script.<br>
 <br>
 Full list of split_image optional arguments:<br>
