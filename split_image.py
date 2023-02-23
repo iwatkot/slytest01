@@ -37,7 +37,7 @@ def split_image(image_path: str, window: Sizes,
         logger.error(LogTemplates.NO_IMAGE.format(image_path))
         return
     # Extracting filename of the original file without extension.
-    image_filenname, _ = os.path.splitext(os.path.basename(image_path))
+    image_filename, _ = os.path.splitext(os.path.basename(image_path))
 
     image_size = ImageSize(*image.shape[:2])
     logger.info(LogTemplates.IMAGE_LOADED.format(height=image_size.height,
@@ -68,7 +68,7 @@ def split_image(image_path: str, window: Sizes,
             tile_count += 1
 
             # Saving the tile image to the file.
-            tile_filename = f"{image_filenname}_x{x}_y{y}.png"
+            tile_filename = f"{image_filename}_x{x}_y{y}.png"
 
             cv2.imwrite(os.path.join(output_dir, tile_filename), tile)
     logger.info(LogTemplates.FINISHED.format(count=tile_count))
